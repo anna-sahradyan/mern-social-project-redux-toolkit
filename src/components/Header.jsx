@@ -5,12 +5,12 @@ import {Toolbar, Avatar, Typography, Button} from "@material-ui/core";
 
 
 const Header = () => {
-    const user = false;
+    const user = true;
     return (
         <>
-            <div className=" flex w-full bg-blue-700 h-16 items-center justify-between ">
+            <div className=" flex w-full  h-16 items-center justify-between  bg-[#3F51B5]">
                 <div className={"flex   ml-4  w-[120px] h-10 bg-white rounded-lg items-center justify-center"}>
-                    <Link to={"/home"}>
+                    <Link to={"/"}>
                         <span className={"text-blue-600 text-sx  font-bold tracking-wider "}>ANNASOCIAL</span>
                     </Link>
                 </div>

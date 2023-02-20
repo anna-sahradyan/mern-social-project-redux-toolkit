@@ -5,7 +5,7 @@ const Layout = ({children}) => {
     return (
         <>
             <Header/>
-            <div>
+            <div className={"flex w-full justify-between "}>
                 {children}
             </div>
         </>

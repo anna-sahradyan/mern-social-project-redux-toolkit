@@ -2,12 +2,33 @@ import axios from "axios";
 
 const API = axios.create({baseURL: `http://localhost:8800`})
 API.interceptors.request.use((req) => {
-    if (localStorage.getItem('profile')) {
-        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
+    if (localStorage.getItem('user')) {
+        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('user')).token}`;
     }
 
     return req;
 });
 //?Auth
-export const signIn = (formData) => API.post(`/user/signin`, formData);
-export const signUp = (formData) => API.post(`/user/signup`, formData);
+//?signup
+export const signUp = async (formData) => {
+    const response = await API.post(`/user/signup`, formData)
+
+    if (response.data) {
+        localStorage.setItem('user', JSON.stringify(response.data))
+    }
+
+    return response.data
+}
+//?login
+export const signIn = async (formData) => {
+    const response = await API.post(`/user/signin`, formData)
+    if (response.data) {
+        localStorage.setItem('user', JSON.stringify(response.data))
+    }
+
+    return response.data
+}
+
+export const logOut = () => {
+    localStorage.removeItem("user")
+}

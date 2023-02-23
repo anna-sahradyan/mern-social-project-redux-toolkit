@@ -1,12 +1,9 @@
 import React from 'react';
 import {GoogleLogin} from "react-google-login";
 import {toast} from "react-toastify";
-import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
-import {AUTH} from "../../constants/actionTypes.js";
 const clientId = "241755766203-ds7jqv6v36klaq8c23senku2pg4c3b2t.apps.googleusercontent.com";
 const LogIn = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
 
@@ -14,8 +11,7 @@ const LogIn = () => {
         const result = res?.profileObj;
         const token = res?.tokenId;
         try {
-            dispatch({type: AUTH, data: {result, token}});
-
+            localStorage.setItem('user', JSON.stringify({result, token}));
             navigate(`/`);
         } catch (err) {
             console.log(err)

@@ -9,7 +9,7 @@ import Home from "./components/Home";
 
 
 const App = () => {
-    const user = JSON.parse(localStorage.getItem('profile'));
+    const user = JSON.parse(localStorage.getItem('user'));
 
     return (<>
         <Layout className={"flex w-full "}>

@@ -5,13 +5,16 @@ import {Avatar, Button, Grid, Paper, Typography} from "@material-ui/core";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Input from "./Input";
 import {gapi} from "gapi-script";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router";
+import {toast} from "react-toastify";
+import {fetchRegister, reset} from "../../redux/auth/authSlice.js";
 
 const clientId = "241755766203-ds7jqv6v36klaq8c23senku2pg4c3b2t.apps.googleusercontent.com"
 const Auth = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {user, loading, errors, isSuccess, message} = useSelector((state) => state.auth);
     const
         [formData, setFormData] = useState({
             firstName: "",
@@ -20,6 +23,7 @@ const Auth = () => {
             password: "",
             confirmPassword: ""
         });
+    const {password, confirmPassword} = formData;
     useEffect(() => {
         function start() {
             gapi.client.init({
@@ -32,24 +36,40 @@ const Auth = () => {
     }, []);
     const [isSignup, setIsSignup] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
+    const handleShowPassword = () => setShowPassword(!showPassword);
     //?switchMode
     const switchMode = () => {
         setIsSignup((prevIsSignup) => !prevIsSignup);
         setShowPassword(false)
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+            toast.error(`Passwords do not match`)
+        } else {
+            dispatch(fetchRegister(formData));
+        }
 
 
     }
+    //?useEffect
+    useEffect(() => {
+        if (errors) {
+            toast.error(message);
+        }
+        if(isSuccess || user){
+            navigate(`/`)
+        }
+        dispatch(reset())
+
+    }, [user, loading, errors, isSuccess, message, dispatch, navigate])
     //?handleChange
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
-    }
-    const handleShowPassword = () => {
 
     }
+
     return (
         <>
             <div className="w-full h-screen bg-gradient-to-tl from-blue-300 to green-500 relative">

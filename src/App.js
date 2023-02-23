@@ -9,8 +9,8 @@ import Home from "./components/Home";
 
 
 const App = () => {
-    //const user = JSON.parse(localStorage.getItem('profile'));
-    const user = false;
+    const user = JSON.parse(localStorage.getItem('profile'));
+
     return (<>
         <Layout className={"flex w-full "}>
             <ToastContainer/>

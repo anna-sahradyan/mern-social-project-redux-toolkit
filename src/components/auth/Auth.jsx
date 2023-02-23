@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
-import Login from "./Login";
-import LogOut from "./LogOut";
+import React, {useEffect, useState} from 'react';
+import Login from "./LogIn.jsx";
+import LogOut from "./LogOut.jsx";
 import {Avatar, Button, Grid, Paper, Typography} from "@material-ui/core";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Input from "./Input";
+import {gapi} from "gapi-script";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router";
 
+const clientId = "241755766203-ds7jqv6v36klaq8c23senku2pg4c3b2t.apps.googleusercontent.com"
 const Auth = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const
         [formData, setFormData] = useState({
             firstName: "",
@@ -14,18 +20,32 @@ const Auth = () => {
             password: "",
             confirmPassword: ""
         });
+    useEffect(() => {
+        function start() {
+            gapi.client.init({
+                clientId: clientId,
+                scope: ""
+            })
+        };
+        gapi.load("client:auth2", start)
+
+    }, []);
     const [isSignup, setIsSignup] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    //?switchMode
     const switchMode = () => {
-
+        setIsSignup((prevIsSignup) => !prevIsSignup);
+        setShowPassword(false)
     }
 
     const handleSubmit = () => {
 
-    }
-    const handleChange = () => {
 
+    }
+    //?handleChange
+    const handleChange = (e) => {
+        setFormData({...formData, [e.target.name]: e.target.value});
     }
     const handleShowPassword = () => {
 
@@ -33,7 +53,8 @@ const Auth = () => {
     return (
         <>
             <div className="w-full h-screen bg-gradient-to-tl from-blue-300 to green-500 relative">
-                <img src={"/img/reg2.jpg"} alt={"bg"} className={" w-full h-full object-cover absolute mix-blend-overlay -z-50 bg-indigo-500 "}/>
+                <img src={"/img/reg2.jpg"} alt={"bg"}
+                     className={" w-full h-full object-cover absolute mix-blend-overlay -z-50 bg-indigo-500 "}/>
                 <Paper elevation={3}
                        className={"w-[450px] h-[auto] mx-auto mt-20 bg-amber-50 rounded-xl shadow-amber-800 border-2"}>
                     <Avatar style={{background: "#F50057", margin: " 5px auto"}}>
